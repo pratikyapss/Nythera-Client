@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "com.zenit.peakclient.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ZoomMixin",
+    "NoHurtcamMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
