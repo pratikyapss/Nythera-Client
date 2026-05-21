@@ -1,0 +1,94 @@
+plugins {
+    id 'fabric-loom' version '1.6-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+loom {
+    splitEnvironmentSourceSets()
+    mods {
+        "peakclient" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+    mixin {
+        defaultRefmapName.set("peakclient.refmap.json")
+    }
+}
+
+repositories {
+    maven {
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake"
+        url = "https://maven.ladysnake.org/releases"
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+    
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+               "minecraft_version": project.minecraft_version,
+               "loader_version": project.loader_version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 17
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+    
+    manifest {
+        attributes(
+            'Main-Class': 'com.zenit.peakclient.Launch',
+            'Implementation-Title': 'Peak Client',
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': 'Zenit'
+        )
+    }
+}
+
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
+    }
+    
+    repositories {
+        // Add repositories to publish to here
+    }
+}
