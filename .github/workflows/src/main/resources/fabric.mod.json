@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "peakclient",
+  "version": "1.0",
+  "name": "Peak Client",
+  "description": "Advanced Minecraft utility mod by Zenit",
+  "authors": ["Zenit"],
+  "contact": {
+    "homepage": "https://github.com/zenit/peakclient",
+    "issues": "https://github.com/zenit/peakclient/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/peakclient/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.zenit.peakclient.PeakClient"
+    ]
+  },
+  "mixins": [
+    "peakclient.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.2",
+    "minecraft": "1.21.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
